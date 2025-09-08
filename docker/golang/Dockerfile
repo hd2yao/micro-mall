@@ -1,5 +1,5 @@
 # 指定多架构支持，保证在 Mac M 系列 (arm64) 和 Linux (amd64) 都能正确构建
-FROM --platform=$BUILDPLATFORM golang:1.22
+FROM --platform=$BUILDPLATFORM golang:1.24
 
 LABEL maintainer="Dysania <dysania@hd2yao>"
 
