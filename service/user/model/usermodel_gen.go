@@ -43,9 +43,9 @@ type (
 	}
 
 	User struct {
-		Id         uint64    `db:"id"`
+		Id         int64    `db:"id"`
 		Name       string    `db:"name"`     // 用户姓名
-		Gender     uint64    `db:"gender"`   // 用户性别
+		Gender     int64    `db:"gender"`   // 用户性别
 		Mobile     string    `db:"mobile"`   // 用户电话
 		Password   string    `db:"password"` // 用户密码
 		CreateTime time.Time `db:"create_time"`
@@ -123,7 +123,7 @@ func (m *defaultUserModel) Insert(ctx context.Context, data *User) (sql.Result, 
 }
 
 func (m *defaultUserModel) Update(ctx context.Context, newData *User) error {
-	data, err := m.FindOne(ctx, newData.Id)
+	data, err := m.FindOne(ctx, uint64(newData.Id))
 	if err != nil {
 		return err
 	}
