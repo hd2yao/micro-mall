@@ -93,18 +93,20 @@ services:
     restart: always
 
   redis-manage:
-    build:
-      context: ./redis-manage
+#    build:
+#      context: ./redis-manage
+    image: rediscommander/redis-commander:latest   # 不需要 build Dockerfile
+    container_name: redis-commander
     environment:
       - TZ=${TZ}
-      - ADMIN_USER=${REDIS_MANAGE_USERNAME}           # 设置 Redis 可视化管理的用户名称
-      - ADMIN_PASS=${REDIS_MANAGE_PASSWORD}           # 设置 Redis 可视化管理的用户密码
-      - REDIS_1_HOST=${REDIS_MANAGE_CONNECT_HOST}     # 设置连接的 Redis 服务 host，可以是 Redis 服务容器的名称，也可以是 Redis 服务容器的 ip 地址
-      - REDIS_1_PORT=${REDIS_MANAGE_CONNECT_PORT}     # 设置连接的 Redis 服务端口号
+      # name:host:port[:db][:password]
+      - REDIS_HOSTS=local:${REDIS_MANAGE_CONNECT_HOST}:${REDIS_MANAGE_CONNECT_PORT}
+      # 如果 Redis 有密码，举例：
+      # - REDIS_HOSTS=local:${REDIS_MANAGE_CONNECT_HOST}:${REDIS_MANAGE_CONNECT_PORT}:0:你的密码
     ports:
-      - "${REDIS_MANAGE_PORT}:8081"                     # 设置容器8081端口映射指定宿主机端口，用于宿主机访问可视化web
-    depends_on:                                       # 依赖容器
-      - redis                                         # 在 Redis 服务容器启动后启动
+      - "${REDIS_MANAGE_PORT}:8081"
+    depends_on:
+      - redis
     networks:
       - backend
     restart: always
